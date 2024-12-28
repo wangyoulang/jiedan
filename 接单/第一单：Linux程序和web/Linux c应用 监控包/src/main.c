@@ -10,7 +10,7 @@
 #include "filter.h"
 
 // 全局变量
-static int g_running = 1;
+int g_running = 1;
 static int g_show_ethernet = 0;
 static int g_show_all = 0;
 static int g_dump_hex = 0;

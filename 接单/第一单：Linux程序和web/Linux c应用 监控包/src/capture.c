@@ -57,10 +57,12 @@ int init_capture(capture_config_t *config) {
 int start_capture(capture_config_t *config, void (*packet_handler)(const unsigned char*, int)) {
     unsigned char buffer[65536];
     int len;
+    extern int g_running;
 
-    while (1) {
+    while (g_running) {
         len = recvfrom(config->sock_fd, buffer, sizeof(buffer), 0, NULL, NULL);
         if (len < 0) {
+            if (!g_running) break;
             perror("recvfrom");
             return -1;
         }
