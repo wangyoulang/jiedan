@@ -50,7 +50,7 @@
 
 1. 安装依赖：
 ```bash
-cd project2
+cd 项目2 Javascript功能
 npm install
 ```
 
