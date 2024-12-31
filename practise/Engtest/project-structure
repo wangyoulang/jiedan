@@ -1,0 +1,17 @@
+├── pages/
+│   ├── index/
+│   │   ├── index.js
+│   │   ├── index.json
+│   │   ├── index.wxml
+│   │   └── index.wxss
+│   └── logs/
+│       ├── logs.js
+│       ├── logs.json
+│       ├── logs.wxml
+│       └── logs.wxss
+├── utils/
+│   └── util.js
+├── app.js
+├── app.json
+├── app.wxss
+└── project.config.json 

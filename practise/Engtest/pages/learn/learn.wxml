@@ -1,0 +1,58 @@
+<view class="container">
+  <view class="phonetic-selector">
+    <view class="selector-header" bindtap="togglePhoneticList">
+      <text class="selected-phonetic">{{selectedPhonetic}}</text>
+      <view class="arrow {{showPhoneticList ? 'arrow-up' : 'arrow-down'}}"></view>
+    </view>
+    
+    <view class="phonetic-list {{showPhoneticList ? 'show' : ''}}">
+      <view wx:for="{{phoneticList}}" wx:key="type" class="phonetic-group">
+        <view class="group-title">{{item.type}}</view>
+        <view class="group-content">
+          <view 
+            wx:for="{{item.items}}" 
+            wx:key="symbol" 
+            wx:for-item="phonetic"
+            class="phonetic-item"
+            bindtap="selectPhonetic"
+            data-symbol="{{phonetic.symbol}}"
+          >
+            <text class="phonetic-symbol">{{phonetic.symbol}}</text>
+            <text class="phonetic-example">{{phonetic.example}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载提示 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 单词卡片 -->
+  <view class="word-card-container" wx:if="{{!loading && wordList.length > 0}}">
+    <view class="word-card">
+      <view class="word-text">{{wordList[currentIndex].word}}</view>
+      <view class="word-phonetic">/{{wordList[currentIndex].phonetic}}/</view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn prev" bindtap="prevWord" disabled="{{currentIndex === 0}}">上一个</button>
+      <button class="action-btn know" bindtap="knowWord">认识</button>
+      <button class="action-btn unknown" bindtap="unknownWord">不认识</button>
+      <button class="action-btn next" bindtap="nextWord" disabled="{{currentIndex === wordList.length - 1}}">下一个</button>
+    </view>
+
+    <!-- 进度显示 -->
+    <view class="progress">
+      <text>{{currentIndex + 1}} / {{wordList.length}}</text>
+    </view>
+  </view>
+
+  <!-- 无数据提示 -->
+  <view class="no-data" wx:if="{{!loading && wordList.length === 0}}">
+    <text>请选择音标获取单词</text>
+  </view>
+</view> 

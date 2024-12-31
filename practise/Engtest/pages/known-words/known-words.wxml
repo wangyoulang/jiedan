@@ -1,0 +1,54 @@
+<view class="container">
+  <view class="view-switch">
+    <view class="switch-btn {{viewMode === 'phonetic' ? 'active' : ''}}" bindtap="switchToPhonetic">音标视图</view>
+    <view class="switch-btn {{viewMode === 'history' ? 'active' : ''}}" bindtap="switchToHistory">学习记录</view>
+  </view>
+
+  <view class="phonetic-view" wx:if="{{viewMode === 'phonetic'}}">
+    <view class="phonetic-groups">
+      <view wx:for="{{phoneticGroups}}" wx:key="type" class="group">
+        <view class="group-title">{{item.type}}</view>
+        <view class="phonetic-list">
+          <view 
+            wx:for="{{item.items}}" 
+            wx:key="symbol" 
+            wx:for-item="phonetic"
+            class="phonetic-item {{selectedPhonetic === phonetic.symbol ? 'selected' : ''}}"
+            bindtap="selectPhonetic"
+            data-symbol="{{phonetic.symbol}}"
+          >
+            <text class="phonetic-symbol">{{phonetic.symbol}}</text>
+            <text class="word-count">({{phonetic.wordCount || 0}})</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 单词列表 -->
+    <view class="word-list" wx:if="{{selectedPhonetic && words.length > 0}}">
+      <view class="word-section-title">{{selectedPhonetic}} 的单词</view>
+      <view class="word-items">
+        <view wx:for="{{words}}" wx:key="word" class="word-item">
+          <text class="word">{{item.word}}</text>
+          <text class="phonetic">/{{item.phonetic}}/</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="no-words" wx:if="{{selectedPhonetic && words.length === 0}}">
+      <text>该音标下暂无认识的单词</text>
+    </view>
+  </view>
+
+  <view class="history-view" wx:if="{{viewMode === 'history'}}">
+    <view class="history-list">
+      <view wx:for="{{studyRecords}}" wx:key="timestamp" class="history-item">
+        <view class="history-date">{{item.date}}</view>
+        <view class="history-word">
+          <text class="word">{{item.word}}</text>
+          <text class="phonetic">/{{item.phonetic}}/</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 
