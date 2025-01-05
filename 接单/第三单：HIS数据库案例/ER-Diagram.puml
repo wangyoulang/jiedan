@@ -1,0 +1,168 @@
+@startuml HIS-ER-Diagram
+
+' 设置样式
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b><color:red>x</color></b>
+!define foreign_key(x) <color:blue>x</color>
+!define normal_field(x) <color:black>x</color>
+
+' 实体定义
+Table(HIS_A_Dept, "组织机构\nDept") {
+    primary_key(DeptNo): 部门编号
+    normal_field(DeptName): 部门名称
+    foreign_key(ParentDeptNo): 父级部门编号
+    foreign_key(Manager): 部门经理编号
+}
+
+Table(HIS_A_Doctor, "医生\nDoctor") {
+    primary_key(Dno): 医生编号
+    normal_field(Dname): 医生姓名
+    normal_field(Dsex): 性别
+    normal_field(Dage): 年龄
+    foreign_key(Ddeptno): 所属部门编号
+    foreign_key(Tno): 职称编号
+}
+
+Table(HIS_A_Title, "职称\nTitle") {
+    primary_key(Tno): 职称编号
+    foreign_key(Sno): 工资类型
+    normal_field(Ttype): 职称类型
+    normal_field(Ttrade): 所属行业
+}
+
+Table(HIS_A_Salary, "工资\nSalary") {
+    primary_key(Sno): 工资编号
+    normal_field(Slevel): 工资等级
+    normal_field(Snumber): 工资数量
+}
+
+Table(HIS_A_Patient, "患者\nPatient") {
+    primary_key(Pno): 患者编号
+    normal_field(Pname): 患者姓名
+    normal_field(Pid): 身份证号
+    normal_field(Pino): 社会保险号
+    normal_field(Pmno): 医疗卡识别号
+    normal_field(Psex): 性别
+    normal_field(Pbd): 出生日期
+    normal_field(Padd): 地址
+}
+
+Table(HIS_A_Patient_tel, "患者联系电话\nPatient_tel") {
+    primary_key(Ptno): 联系电话编号
+    foreign_key(Pno): 患者编号
+    normal_field(Pteltype): 联系方式类型
+    normal_field(Ptelcode): 联系号码
+}
+
+Table(HIS_A_Medicine, "药品\nMedicine") {
+    primary_key(Mno): 药品编号
+    normal_field(Mname): 药品名称
+    normal_field(Mprice): 价格
+    normal_field(Munit): 包装单位
+    normal_field(Mtype): 药品类型
+}
+
+Table(HIS_A_Godown_Entry, "入库主单\nGodown_Entry") {
+    primary_key(GMno): 主单编号
+    normal_field(GMdate): 入库时间
+    normal_field(GMname): 主单名称
+}
+
+Table(HIS_A_Godown_Slave, "入库从单\nGodown_Slave") {
+    primary_key(GSno): 从单编号
+    foreign_key(GMno): 所属主单编号
+    foreign_key(Mno): 药品编号
+    normal_field(GSnumber): 数量
+    normal_field(GSunit): 数量单位
+    normal_field(GSbatch): 批次号
+    normal_field(GSprice): 价格
+    normal_field(GSexpdate): 有效期
+}
+
+Table(HIS_A_Register_Form, "挂号单\nRegister_Form") {
+    primary_key(RFno): 挂号单编号
+    foreign_key(RFdept): 挂号科室
+    foreign_key(RFdoctor): 挂号医生
+    foreign_key(RFpatient): 挂号患者
+    foreign_key(RFcashier): 挂号收费员
+    normal_field(RFtime): 挂号时间
+    normal_field(RFvisittime): 预约就诊时间
+    normal_field(RFfee): 挂号费
+    normal_field(RFnotes): 备注
+}
+
+Table(HIS_A_Diagnosis, "就诊\nDiagnosis") {
+    primary_key(DGno): 诊断编码
+    foreign_key(Pno): 患者编号
+    foreign_key(Dno): 医生编号
+    normal_field(Symptom): 症状描述
+    normal_field(Diagnosis): 诊断结论
+    normal_field(DGtime): 诊断时间
+    normal_field(Rfee): 就诊费用
+}
+
+Table(HIS_A_Recipe_Master, "处方\nRecipe_Master") {
+    primary_key(RMno): 处方编号
+    foreign_key(DeptNo): 部门编号
+    foreign_key(Dno): 医生编号
+    foreign_key(Pno): 患者编号
+    normal_field(RMage): 年龄
+    normal_field(RMtime): 处方时间
+}
+
+Table(HIS_A_Recipe_Detail, "处方药品清单\nRecipe_Detail") {
+    primary_key(RDno): 处方药品清单编号
+    foreign_key(RMno): 所属处方编号
+    foreign_key(Mno): 药品编号
+    normal_field(RDprice): 价格
+    normal_field(RDnumber): 数量
+    normal_field(RDunit): 数量单位
+}
+
+Table(HIS_A_Fee, "收费\nFee") {
+    primary_key(Fno): 发票单编号
+    normal_field(Fnumber): 发票号码
+    normal_field(Fdate): 日期
+    foreign_key(DGno): 就诊编号
+    foreign_key(Rno): 处方编号
+    foreign_key(Cno): 收银员编号
+    foreign_key(Pno): 患者编号
+    normal_field(FRecipefee): 应收金额
+    normal_field(Fdiscount): 减免折扣金额
+    normal_field(Fsum): 实收金额
+}
+
+Table(HIS_A_Users, "用户\nUsers") {
+    primary_key(uid): 用户ID
+    normal_field(username): 用户名
+    normal_field(password): 密码
+    normal_field(role): 角色
+    normal_field(status): 状态
+    normal_field(create_time): 创建时间
+    normal_field(last_login): 最后登录时间
+}
+
+' 关系定义
+HIS_A_Dept "1" -- "0..1" HIS_A_Dept : 上级部门 >
+HIS_A_Dept "1" -- "*" HIS_A_Doctor : 所属部门 >
+HIS_A_Doctor "1" -- "*" HIS_A_Dept : 管理 >
+HIS_A_Doctor "*" -- "1" HIS_A_Title : 拥有 >
+HIS_A_Title "*" -- "1" HIS_A_Salary : 对应 >
+HIS_A_Patient "1" -- "*" HIS_A_Patient_tel : 拥有 >
+HIS_A_Medicine "1" -- "*" HIS_A_Godown_Slave : 入库 >
+HIS_A_Godown_Entry "1" -- "*" HIS_A_Godown_Slave : 包含 >
+HIS_A_Register_Form "*" -- "1" HIS_A_Patient : 挂号 >
+HIS_A_Register_Form "*" -- "1" HIS_A_Doctor : 就诊医生 >
+HIS_A_Register_Form "*" -- "1" HIS_A_Dept : 就诊科室 >
+HIS_A_Diagnosis "*" -- "1" HIS_A_Patient : 就诊患者 >
+HIS_A_Diagnosis "*" -- "1" HIS_A_Doctor : 诊断医生 >
+HIS_A_Recipe_Master "1" -- "*" HIS_A_Recipe_Detail : 包含 >
+HIS_A_Recipe_Master "*" -- "1" HIS_A_Patient : 开具给 >
+HIS_A_Recipe_Master "*" -- "1" HIS_A_Doctor : 开具者 >
+HIS_A_Recipe_Detail "*" -- "1" HIS_A_Medicine : 使用 >
+HIS_A_Fee "*" -- "1" HIS_A_Patient : 收费 >
+HIS_A_Fee "*" -- "1" HIS_A_Recipe_Master : 处方收费 >
+HIS_A_Fee "*" -- "1" HIS_A_Diagnosis : 诊断收费 >
+HIS_A_Users "1" -- "0..1" HIS_A_Doctor : 关联 >
+
+@enduml 
