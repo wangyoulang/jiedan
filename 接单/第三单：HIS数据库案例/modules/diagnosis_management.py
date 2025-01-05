@@ -105,12 +105,12 @@ class DiagnosisManagement:
                         WHEN rm.RMno IS NULL THEN '未开具'
                         ELSE '已开具'
                     END as 处方状态
-                FROM Register_Form rf
-                LEFT JOIN Patient p ON rf.RFpatient = p.Pno
-                LEFT JOIN Dept d ON rf.RFdept = d.DeptNo
-                LEFT JOIN Doctor doc ON rf.RFdoctor = doc.Dno
-                LEFT JOIN Diagnosis dg ON dg.Pno = rf.RFpatient AND dg.Dno = rf.RFdoctor
-                LEFT JOIN Recipe_Master rm ON rm.Pno = rf.RFpatient AND rm.Dno = rf.RFdoctor
+                FROM HIS_A_Register_Form rf
+                LEFT JOIN HIS_A_Patient p ON rf.RFpatient = p.Pno
+                LEFT JOIN HIS_A_Dept d ON rf.RFdept = d.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON rf.RFdoctor = doc.Dno
+                LEFT JOIN HIS_A_Diagnosis dg ON dg.Pno = rf.RFpatient AND dg.Dno = rf.RFdoctor
+                LEFT JOIN HIS_A_Recipe_Master rm ON rm.Pno = rf.RFpatient AND rm.Dno = rf.RFdoctor
                 WHERE DATE(rf.RFvisittime) = %s
                 ORDER BY rf.RFvisittime DESC
             """
@@ -238,7 +238,7 @@ class DiagnosisManagement:
             try:
                 # 插入诊断记录
                 sql = """
-                    INSERT INTO Diagnosis (
+                    INSERT INTO HIS_A_Diagnosis (
                         RFno, DGchief, DGpresent, DGpast,
                         DGresult, DGtime, DGstatus
                     ) VALUES (%s, %s, %s, %s, %s, NOW(), 1)
@@ -287,11 +287,11 @@ class DiagnosisManagement:
                     p.Pname as patient_name,
                     dept.DeptName as dept_name,
                     doc.Dname as doctor_name
-                FROM Diagnosis d
-                JOIN Register_Form rf ON d.RFno = rf.RFno
-                JOIN Patient p ON rf.RFpatient = p.Pno
-                JOIN Dept dept ON rf.RFdept = dept.DeptNo
-                JOIN Doctor doc ON rf.RFdoctor = doc.Dno
+                FROM HIS_A_Diagnosis d
+                JOIN HIS_A_Register_Form rf ON d.RFno = rf.RFno
+                JOIN HIS_A_Patient p ON rf.RFpatient = p.Pno
+                JOIN HIS_A_Dept dept ON rf.RFdept = dept.DeptNo
+                JOIN HIS_A_Doctor doc ON rf.RFdoctor = doc.Dno
                 WHERE d.RFno = %s
             """
             cursor.execute(sql, (reg_data[0],))
@@ -462,12 +462,12 @@ class DiagnosisManagement:
                         WHEN rm.RMno IS NULL THEN '未开具'
                         ELSE '已开具'
                     END as 处方状态
-                FROM Register_Form rf
-                LEFT JOIN Patient p ON rf.RFpatient = p.Pno
-                LEFT JOIN Dept d ON rf.RFdept = d.DeptNo
-                LEFT JOIN Doctor doc ON rf.RFdoctor = doc.Dno
-                LEFT JOIN Diagnosis dg ON dg.Pno = rf.RFpatient AND dg.Dno = rf.RFdoctor
-                LEFT JOIN Recipe_Master rm ON rm.Pno = rf.RFpatient AND rm.Dno = rf.RFdoctor
+                FROM HIS_A_Register_Form rf
+                LEFT JOIN HIS_A_Patient p ON rf.RFpatient = p.Pno
+                LEFT JOIN HIS_A_Dept d ON rf.RFdept = d.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON rf.RFdoctor = doc.Dno
+                LEFT JOIN HIS_A_Diagnosis dg ON dg.Pno = rf.RFpatient AND dg.Dno = rf.RFdoctor
+                LEFT JOIN HIS_A_Recipe_Master rm ON rm.Pno = rf.RFpatient AND rm.Dno = rf.RFdoctor
                 WHERE DATE(rf.RFvisittime) = %s
                     AND (p.Pname LIKE %s OR d.DeptName LIKE %s OR doc.Dname LIKE %s)
                 ORDER BY rf.RFvisittime DESC

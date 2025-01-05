@@ -86,7 +86,7 @@ class MedicineManagement:
             
             # 检查并创建Stock表（去掉外键约束）
             cursor.execute("""
-                CREATE TABLE IF NOT EXISTS Stock (
+                CREATE TABLE IF NOT EXISTS HIS_A_Stock (
                     Mno VARCHAR(20),
                     Sbatch VARCHAR(50),
                     Snumber INTEGER,
@@ -105,8 +105,8 @@ class MedicineManagement:
                     COALESCE(SUM(s.Snumber), 0) as 库存数量,
                     GROUP_CONCAT(DISTINCT s.Sbatch) as 批号,
                     MAX(s.Sexpiry) as 有效期
-                FROM Medicine m
-                LEFT JOIN Stock s ON m.Mno = s.Mno
+                FROM HIS_A_Medicine m
+                LEFT JOIN HIS_A_Stock s ON m.Mno = s.Mno
                 GROUP BY m.Mno, m.Mname, m.Mprice, m.Munit
                 ORDER BY m.Mno
             """
@@ -203,14 +203,14 @@ class MedicineManagement:
             cursor = conn.cursor()
             
             # 检查药品编号是否已存在
-            cursor.execute("SELECT COUNT(*) as count FROM Medicine WHERE Mno = %s", (med_no,))
+            cursor.execute("SELECT COUNT(*) as count FROM HIS_A_Medicine WHERE Mno = %s", (med_no,))
             if cursor.fetchone()['count'] > 0:
                 messagebox.showerror("错误", "该药品编号已存在！")
                 return
             
             # 插入数据
             sql = """
-                INSERT INTO Medicine (Mno, Mname, Mprice, Munit)
+                INSERT INTO HIS_A_Medicine (Mno, Mname, Mprice, Munit)
                 VALUES (%s, %s, %s, %s)
             """
             cursor.execute(sql, (med_no, med_name, price, unit))
@@ -299,7 +299,7 @@ class MedicineManagement:
             
             # 更新数据
             sql = """
-                UPDATE Medicine 
+                UPDATE HIS_A_Medicine 
                 SET Mname = %s, Mprice = %s, Munit = %s
                 WHERE Mno = %s
             """
@@ -340,13 +340,13 @@ class MedicineManagement:
             cursor = conn.cursor()
             
             # 检查是否有库存
-            cursor.execute("SELECT COUNT(*) as count FROM Stock WHERE Mno = %s", (med_data[0],))
+            cursor.execute("SELECT COUNT(*) as count FROM HIS_A_Stock WHERE Mno = %s", (med_data[0],))
             if cursor.fetchone()['count'] > 0:
                 messagebox.showerror("错误", "该药品还有库存，无法删除！")
                 return
             
             # 删除药品
-            cursor.execute("DELETE FROM Medicine WHERE Mno = %s", (med_data[0],))
+            cursor.execute("DELETE FROM HIS_A_Medicine WHERE Mno = %s", (med_data[0],))
             conn.commit()
             
             messagebox.showinfo("成功", "药品删除成功！")
@@ -424,7 +424,7 @@ class MedicineManagement:
             
             # 插入库存数据
             sql = """
-                INSERT INTO Stock (Mno, Sbatch, Snumber, Sexpiry)
+                INSERT INTO HIS_A_Stock (Mno, Sbatch, Snumber, Sexpiry)
                 VALUES (%s, %s, %s, %s)
                 ON DUPLICATE KEY UPDATE
                 Snumber = Snumber + %s
@@ -466,8 +466,8 @@ class MedicineManagement:
                     s.Snumber as 库存数量,
                     s.Sbatch as 批号,
                     s.Sexpiry as 有效期
-                FROM Medicine m
-                LEFT JOIN Stock s ON m.Mno = s.Mno
+                FROM HIS_A_Medicine m
+                LEFT JOIN HIS_A_Stock s ON m.Mno = s.Mno
                 WHERE m.Mno LIKE %s 
                    OR m.Mname LIKE %s
                 ORDER BY m.Mno

@@ -102,12 +102,12 @@ class PrescriptionManagement:
                         WHEN f.Fno IS NULL THEN '未收费'
                         ELSE '已收费'
                     END as 状态
-                FROM Recipe_Master rm
-                JOIN Recipe_Detail rd ON rm.RMno = rd.RMno
-                JOIN Patient p ON rm.Pno = p.Pno
-                JOIN Dept d ON rm.DeptNo = d.DeptNo
-                JOIN Doctor doc ON rm.Dno = doc.Dno
-                LEFT JOIN Fee f ON f.Rno = rm.RMno
+                FROM HIS_A_Recipe_Master rm
+                JOIN HIS_A_Recipe_Detail rd ON rm.RMno = rd.RMno
+                JOIN HIS_A_Patient p ON rm.Pno = p.Pno
+                JOIN HIS_A_Dept d ON rm.DeptNo = d.DeptNo
+                JOIN HIS_A_Doctor doc ON rm.Dno = doc.Dno
+                LEFT JOIN HIS_A_Fee f ON f.Rno = rm.RMno
                 WHERE DATE(rm.RMtime) = %s
                 GROUP BY rm.RMno, p.Pname, d.DeptName, doc.Dname, rm.RMtime
                 ORDER BY rm.RMtime DESC

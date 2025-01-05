@@ -105,12 +105,12 @@ class FeeManagement:
                         WHEN f.Fno IS NULL THEN '未收费'
                         ELSE '已收费'
                     END as 状态
-                FROM Recipe_Master rm
-                JOIN Recipe_Detail rd ON rm.RMno = rd.RMno
-                JOIN Patient p ON rm.Pno = p.Pno
-                JOIN Dept d ON rm.DeptNo = d.DeptNo
-                JOIN Doctor doc ON rm.Dno = doc.Dno
-                LEFT JOIN Fee f ON f.Rno = rm.RMno
+                FROM HIS_A_Recipe_Master rm
+                JOIN HIS_A_Recipe_Detail rd ON rm.RMno = rd.RMno
+                JOIN HIS_A_Patient p ON rm.Pno = p.Pno
+                JOIN HIS_A_Dept d ON rm.DeptNo = d.DeptNo
+                JOIN HIS_A_Doctor doc ON rm.Dno = doc.Dno
+                LEFT JOIN HIS_A_Fee f ON f.Rno = rm.RMno
                 WHERE DATE(rm.RMtime) = %s
                 GROUP BY rm.RMno, p.Pname, d.DeptName, doc.Dname, rm.RMtime, f.Fsum
                 ORDER BY rm.RMtime DESC
@@ -243,15 +243,15 @@ class FeeManagement:
                 # 获取处方信息
                 cursor.execute("""
                     SELECT rm.*, p.Pno
-                    FROM Recipe_Master rm
-                    JOIN Patient p ON rm.Pno = p.Pno
+                    FROM HIS_A_Recipe_Master rm
+                    JOIN HIS_A_Patient p ON rm.Pno = p.Pno
                     WHERE rm.RMno = %s
                 """, (recipe_no,))
                 recipe = cursor.fetchone()
                 
                 # 插入收费记录
                 sql = """
-                    INSERT INTO Fee (
+                    INSERT INTO HIS_A_Fee (
                         Fnumber, Fdate, Rno, Cno, Pno,
                         FRecipefee, Fdiscount, Fsum
                     ) VALUES (%s, NOW(), %s, %s, %s, %s, %s, %s)
@@ -328,8 +328,8 @@ class FeeManagement:
                     f.*,
                     p.Pname as patient_name,
                     u.username as cashier_name
-                FROM Fee f
-                JOIN Patient p ON f.Pno = p.Pno
+                FROM HIS_A_Fee f
+                JOIN HIS_A_Patient p ON f.Pno = p.Pno
                 JOIN Users u ON f.Cno = u.uid
                 WHERE f.Rno = %s
             """
@@ -403,12 +403,12 @@ class FeeManagement:
                         WHEN f.Fno IS NULL THEN '未收费'
                         ELSE '已收费'
                     END as 状态
-                FROM Recipe_Master rm
-                JOIN Recipe_Detail rd ON rm.RMno = rd.RMno
-                JOIN Patient p ON rm.Pno = p.Pno
-                JOIN Dept d ON rm.DeptNo = d.DeptNo
-                JOIN Doctor doc ON rm.Dno = doc.Dno
-                LEFT JOIN Fee f ON f.Rno = rm.RMno
+                FROM HIS_A_Recipe_Master rm
+                JOIN HIS_A_Recipe_Detail rd ON rm.RMno = rd.RMno
+                JOIN HIS_A_Patient p ON rm.Pno = p.Pno
+                JOIN HIS_A_Dept d ON rm.DeptNo = d.DeptNo
+                JOIN HIS_A_Doctor doc ON rm.Dno = doc.Dno
+                LEFT JOIN HIS_A_Fee f ON f.Rno = rm.RMno
                 WHERE DATE(rm.RMtime) = %s
                     AND (p.Pname LIKE %s OR d.DeptName LIKE %s OR doc.Dname LIKE %s)
                 GROUP BY rm.RMno, p.Pname, d.DeptName, doc.Dname, rm.RMtime, f.Fsum

@@ -1,5 +1,5 @@
 -- 1. 工资表(Salary)数据
-INSERT INTO Salary (Sno, Slevel, Snumber) VALUES
+INSERT INTO HIS_A_Salary (Sno, Slevel, Snumber) VALUES
 (1, '高级', 5000.00),
 (2, '高级', 4500.00),
 (3, '中级', 4000.00),
@@ -8,7 +8,7 @@ INSERT INTO Salary (Sno, Slevel, Snumber) VALUES
 (6, '初级', 2500.00);
 
 -- 2. 职称表(Title)数据
-INSERT INTO Title (Tno, Sno, Ttype, Ttrade) VALUES
+INSERT INTO HIS_A_Title (Tno, Sno, Ttype, Ttrade) VALUES
 (101, 1, '主任医师', '医疗'),
 (102, 2, '副主任医师', '医疗'),
 (103, 3, '主治医师', '医疗'),
@@ -17,7 +17,7 @@ INSERT INTO Title (Tno, Sno, Ttype, Ttrade) VALUES
 (106, 6, '药师', '药剂');
 
 -- 3. 组织机构表(Dept)数据
-INSERT INTO Dept (DeptNo, DeptName, ParentDeptNo, Manager) VALUES
+INSERT INTO HIS_A_Dept (DeptNo, DeptName, ParentDeptNo, Manager) VALUES
 (1, 'XX医院', NULL, NULL),
 (10, '门诊部', 1, NULL),
 (20, '住院部', 1, NULL),
@@ -30,7 +30,7 @@ INSERT INTO Dept (DeptNo, DeptName, ParentDeptNo, Manager) VALUES
 (202, '外科病房', 20, NULL);
 
 -- 4. 医生表(Doctor)数据
-INSERT INTO Doctor (Dno, Dname, Dsex, Dage, Ddeptno, Tno) VALUES
+INSERT INTO HIS_A_Doctor (Dno, Dname, Dsex, Dage, Ddeptno, Tno) VALUES
 (1001, '张医生', '男', 45, 101, 101),
 (1002, '李医生', '女', 42, 101, 102),
 (1003, '王医生', '男', 38, 102, 102),
@@ -43,14 +43,14 @@ INSERT INTO Doctor (Dno, Dname, Dsex, Dage, Ddeptno, Tno) VALUES
 (1010, '吴医生', '女', 36, 105, 103);
 
 -- 更新部门管理者
-UPDATE Dept SET Manager = 1001 WHERE DeptNo = 101;
-UPDATE Dept SET Manager = 1003 WHERE DeptNo = 102;
-UPDATE Dept SET Manager = 1005 WHERE DeptNo = 103;
-UPDATE Dept SET Manager = 1007 WHERE DeptNo = 104;
-UPDATE Dept SET Manager = 1009 WHERE DeptNo = 105;
+UPDATE HIS_A_Dept SET Manager = 1001 WHERE DeptNo = 101;
+UPDATE HIS_A_Dept SET Manager = 1003 WHERE DeptNo = 102;
+UPDATE HIS_A_Dept SET Manager = 1005 WHERE DeptNo = 103;
+UPDATE HIS_A_Dept SET Manager = 1007 WHERE DeptNo = 104;
+UPDATE HIS_A_Dept SET Manager = 1009 WHERE DeptNo = 105;
 
 -- 5. 患者表(Patient)数据
-INSERT INTO Patient (Pno, Pname, Pid, Pino, Pmno, Psex, Pbd, Padd) VALUES
+INSERT INTO HIS_A_Patient (Pno, Pname, Pid, Pino, Pmno, Psex, Pbd, Padd) VALUES
 (1, '张三', '110101199001011234', 'SI001', 'MC001', '男', '1990-01-01', '北京市海淀区'),
 (2, '李四', '110101199103023456', 'SI002', 'MC002', '女', '1991-03-02', '北京市朝阳区'),
 (3, '王五', '110101199205034567', 'SI003', 'MC003', '男', '1992-05-03', '北京市西城区'),
@@ -58,7 +58,7 @@ INSERT INTO Patient (Pno, Pname, Pid, Pino, Pmno, Psex, Pbd, Padd) VALUES
 (5, '孙七', '110101199409056789', 'SI005', 'MC005', '男', '1994-09-05', '北京市丰台区');
 
 -- 6. 患者联系电话表(Patient_tel)数据
-INSERT INTO Patient_tel (Ptno, Pno, Pteltype, Ptelcode) VALUES
+INSERT INTO HIS_A_Patient_tel (Ptno, Pno, Pteltype, Ptelcode) VALUES
 (1, 1, '手机', '13800138001'),
 (2, 1, '家庭', '010-66666666'),
 (3, 2, '手机', '13800138002'),
@@ -68,7 +68,7 @@ INSERT INTO Patient_tel (Ptno, Pno, Pteltype, Ptelcode) VALUES
 (7, 5, '手机', '13800138005');
 
 -- 7. 药品表(Medicine)数据
-INSERT INTO Medicine (Mno, Mname, Mprice, Munit, Mtype) VALUES
+INSERT INTO HIS_A_Medicine (Mno, Mname, Mprice, Munit, Mtype) VALUES
 (1, '阿莫西林胶囊', 15.80, '盒', '西药'),
 (2, '布洛芬片', 12.50, '盒', '西药'),
 (3, '感冒灵颗粒', 22.00, '盒', '中成药'),
@@ -79,14 +79,14 @@ INSERT INTO Medicine (Mno, Mname, Mprice, Munit, Mtype) VALUES
 (8, '创可贴', 5.00, '盒', '医用耗材');
 
 -- 8. 入库主单表(Godown_Entry)数据
-INSERT INTO Godown_Entry (GMno, GMdate, GMname) VALUES
+INSERT INTO HIS_A_Godown_Entry (GMno, GMdate, GMname) VALUES
 (1, '2023-01-01 10:00:00', '常用药品入库'),
 (2, '2023-01-02 14:00:00', '急诊药品入库'),
 (3, '2023-01-03 09:00:00', '中药材入库'),
 (4, '2023-01-04 11:00:00', '医疗器械入库');
 
 -- 9. 入库从单表(Godown_Slave)数据
-INSERT INTO Godown_Slave (GSno, GMno, Mno, GSnumber, GSunit, GSbatch, GSprice, GSexpdate) VALUES
+INSERT INTO HIS_A_Godown_Slave (GSno, GMno, Mno, GSnumber, GSunit, GSbatch, GSprice, GSexpdate) VALUES
 (1, 1, 1, 100, '盒', 'BT20230101', 15.00, '2024-01-01'),
 (2, 1, 2, 200, '盒', 'BT20230102', 12.00, '2024-02-01'),
 (3, 2, 3, 150, '盒', 'BT20230103', 20.00, '2024-03-01'),
@@ -97,7 +97,7 @@ INSERT INTO Godown_Slave (GSno, GMno, Mno, GSnumber, GSunit, GSbatch, GSprice, G
 (8, 4, 8, 500, '盒', 'BT20230108', 4.50, '2024-08-01');
 
 -- 10. 挂号单表(Register_Form)数据
-INSERT INTO Register_Form (RFno, RFdept, RFdoctor, RFpatient, RFcashier, RFtime, RFvisittime, RFfee, RFnotes) VALUES
+INSERT INTO HIS_A_Register_Form (RFno, RFdept, RFdoctor, RFpatient, RFcashier, RFtime, RFvisittime, RFfee, RFnotes) VALUES
 (1, 101, 1001, 1, 1, '2023-01-01 08:00:00', '2023-01-01 09:00:00', 20.00, '普通门诊'),
 (2, 101, 1002, 2, 1, '2023-01-01 08:30:00', '2023-01-01 09:30:00', 20.00, '普通门诊'),
 (3, 102, 1003, 3, 2, '2023-01-01 09:00:00', '2023-01-01 10:00:00', 20.00, '普通门诊'),
@@ -105,7 +105,7 @@ INSERT INTO Register_Form (RFno, RFdept, RFdoctor, RFpatient, RFcashier, RFtime,
 (5, 104, 1007, 5, 1, '2023-01-01 10:00:00', '2023-01-01 11:00:00', 20.00, '普通门诊');
 
 -- 11. 就诊表(Diagnosis)数据
-INSERT INTO Diagnosis (DGno, Pno, Dno, Symptom, Diagnosis, DGtime, Rfee) VALUES
+INSERT INTO HIS_A_Diagnosis (DGno, Pno, Dno, Symptom, Diagnosis, DGtime, Rfee) VALUES
 (1, 1, 1001, '发热、咳嗽', '上呼吸道感染', '2023-01-01 09:00:00', 50.00),
 (2, 2, 1002, '头痛、发热', '感冒', '2023-01-01 09:30:00', 50.00),
 (3, 3, 1003, '腹痛', '胃炎', '2023-01-01 10:00:00', 50.00),
@@ -113,7 +113,7 @@ INSERT INTO Diagnosis (DGno, Pno, Dno, Symptom, Diagnosis, DGtime, Rfee) VALUES
 (5, 5, 1007, '发热', '普通感冒', '2023-01-01 11:00:00', 50.00);
 
 -- 12. 处方表(Recipe_Master)数据
-INSERT INTO Recipe_Master (RMno, DeptNo, Dno, Pno, RMage, RMtime) VALUES
+INSERT INTO HIS_A_Recipe_Master (RMno, DeptNo, Dno, Pno, RMage, RMtime) VALUES
 (1, 101, 1001, 1, 33, '2023-01-01 09:15:00'),
 (2, 101, 1002, 2, 32, '2023-01-01 09:45:00'),
 (3, 102, 1003, 3, 31, '2023-01-01 10:15:00'),
@@ -121,7 +121,7 @@ INSERT INTO Recipe_Master (RMno, DeptNo, Dno, Pno, RMage, RMtime) VALUES
 (5, 104, 1007, 5, 29, '2023-01-01 11:15:00');
 
 -- 13. 处方药品清单表(Recipe_Detail)数据
-INSERT INTO Recipe_Detail (RDno, RMno, Mno, RDprice, RDnumber, RDunit) VALUES
+INSERT INTO HIS_A_Recipe_Detail (RDno, RMno, Mno, RDprice, RDnumber, RDunit) VALUES
 (1, 1, 1, 15.80, '2', '盒'),
 (2, 1, 3, 22.00, '1', '盒'),
 (3, 2, 2, 12.50, '1', '盒'),
@@ -131,7 +131,7 @@ INSERT INTO Recipe_Detail (RDno, RMno, Mno, RDprice, RDnumber, RDunit) VALUES
 (7, 5, 2, 12.50, '1', '盒');
 
 -- 14. 收费表(Fee)数据
-INSERT INTO Fee (Fno, Fnumber, Fdate, DGno, Rno, Cno, Pno, FRecipefee, Fdiscount, Fsum) VALUES
+INSERT INTO HIS_A_Fee (Fno, Fnumber, Fdate, DGno, Rno, Cno, Pno, FRecipefee, Fdiscount, Fsum) VALUES
 (1, 'F20230101001', '2023-01-01 09:20:00', 1, 1, 1, 1, 103.60, 0, 103.60),
 (2, 'F20230101002', '2023-01-01 09:50:00', 2, 2, 1, 2, 71.00, 0, 71.00),
 (3, 'F20230101003', '2023-01-01 10:20:00', 3, 3, 2, 3, 83.00, 0, 83.00),
@@ -139,7 +139,7 @@ INSERT INTO Fee (Fno, Fnumber, Fdate, DGno, Rno, Cno, Pno, FRecipefee, Fdiscount
 (5, 'F20230101005', '2023-01-01 11:20:00', 5, 5, 1, 5, 62.50, 0, 62.50);
 
 -- 15. 用户表(Users)数据
-INSERT INTO Users (uid, username, password, role, status, create_time, last_login) VALUES
+INSERT INTO HIS_A_Users (uid, username, password, role, status, create_time, last_login) VALUES
 (1, 'admin', 'admin123', '管理员', 1, '2023-01-01 00:00:00', '2023-01-01 08:00:00'),
 (2, 'doctor1', 'doc123', '医生', 1, '2023-01-01 00:00:00', '2023-01-01 08:30:00'),
 (3, 'doctor2', 'doc123', '医生', 1, '2023-01-01 00:00:00', '2023-01-01 08:30:00'),

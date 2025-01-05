@@ -105,11 +105,11 @@ class RegisterManagement:
                         ELSE '已就诊'
                     END as 状态,
                     u.username as 收银员
-                FROM Register_Form rf
-                LEFT JOIN Patient p ON rf.RFpatient = p.Pno
-                LEFT JOIN Dept d ON rf.RFdept = d.DeptNo
-                LEFT JOIN Doctor doc ON rf.RFdoctor = doc.Dno
-                LEFT JOIN Users u ON rf.RFcashier = u.uid
+                FROM HIS_A_Register_Form rf
+                LEFT JOIN HIS_A_Patient p ON rf.RFpatient = p.Pno
+                LEFT JOIN HIS_A_Dept d ON rf.RFdept = d.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON rf.RFdoctor = doc.Dno
+                LEFT JOIN HIS_A_Users u ON rf.RFcashier = u.uid
                 WHERE DATE(rf.RFtime) = %s
                 ORDER BY rf.RFvisittime DESC
             """
@@ -264,15 +264,15 @@ class RegisterManagement:
             try:
                 # 检查或创建患者记录
                 cursor.execute("""
-                    INSERT INTO Patient (Pname)
+                    INSERT INTO HIS_A_Patient (Pname)
                     SELECT %s
                     WHERE NOT EXISTS (
-                        SELECT 1 FROM Patient WHERE Pname = %s
+                        SELECT 1 FROM HIS_A_Patient WHERE Pname = %s
                     )
                 """, (patient_name, patient_name))
                 
                 # 获取患者ID
-                cursor.execute("SELECT Pno FROM Patient WHERE Pname = %s", (patient_name,))
+                cursor.execute("SELECT Pno FROM HIS_A_Patient WHERE Pname = %s", (patient_name,))
                 patient_id = cursor.fetchone()['Pno']
                 
                 # 获取科室和医生ID
@@ -281,7 +281,7 @@ class RegisterManagement:
                 
                 # 插入挂号记录
                 sql = """
-                    INSERT INTO Register_Form (
+                    INSERT INTO HIS_A_Register_Form (
                         RFdept, RFdoctor, RFpatient, RFcashier,
                         RFtime, RFvisittime, RFfee
                     ) VALUES (%s, %s, %s, %s, NOW(), %s, %s)
@@ -406,11 +406,11 @@ class RegisterManagement:
                         ELSE '已就诊'
                     END as 状态,
                     u.username as 收银员
-                FROM Register_Form rf
-                LEFT JOIN Patient p ON rf.RFpatient = p.Pno
-                LEFT JOIN Dept d ON rf.RFdept = d.DeptNo
-                LEFT JOIN Doctor doc ON rf.RFdoctor = doc.Dno
-                LEFT JOIN Users u ON rf.RFcashier = u.uid
+                FROM HIS_A_Register_Form rf
+                LEFT JOIN HIS_A_Patient p ON rf.RFpatient = p.Pno
+                LEFT JOIN HIS_A_Dept d ON rf.RFdept = d.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON rf.RFdoctor = doc.Dno
+                LEFT JOIN HIS_A_Users u ON rf.RFcashier = u.uid
                 WHERE DATE(rf.RFtime) = %s
                     AND (p.Pname LIKE %s OR d.DeptName LIKE %s OR doc.Dname LIKE %s)
                 ORDER BY rf.RFvisittime DESC

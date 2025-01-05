@@ -86,9 +86,9 @@ class DeptManagement:
                     d.DeptName,
                     IFNULL(p.DeptName, '') as ParentDeptName,
                     IFNULL(doc.Dname, '') as ManagerName
-                FROM Dept d
-                LEFT JOIN Dept p ON d.ParentDeptNo = p.DeptNo
-                LEFT JOIN Doctor doc ON d.Manager = doc.Dno
+                FROM HIS_A_Dept d
+                LEFT JOIN HIS_A_Dept p ON d.ParentDeptNo = p.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON d.Manager = doc.Dno
                 ORDER BY d.DeptNo
             """
             cursor.execute(sql)
@@ -176,7 +176,7 @@ class DeptManagement:
         try:
             conn = pymysql.connect(**self.db_config)
             cursor = conn.cursor()
-            cursor.execute("SELECT DeptNo, DeptName FROM Dept")
+            cursor.execute("SELECT DeptNo, DeptName FROM HIS_A_Dept")
             depts = cursor.fetchall()
             combobox['values'] = [''] + [f"{dept['DeptNo']} - {dept['DeptName']}" for dept in depts]
         except Exception as e:
@@ -191,7 +191,7 @@ class DeptManagement:
         try:
             conn = pymysql.connect(**self.db_config)
             cursor = conn.cursor()
-            cursor.execute("SELECT Dno, Dname FROM Doctor")
+            cursor.execute("SELECT Dno, Dname FROM HIS_A_Doctor")
             doctors = cursor.fetchall()
             combobox['values'] = [''] + [f"{doc['Dno']} - {doc['Dname']}" for doc in doctors]
         except Exception as e:
@@ -217,7 +217,7 @@ class DeptManagement:
             
             # 插入数据
             sql = """
-                INSERT INTO Dept (DeptNo, DeptName, ParentDeptNo, Manager)
+                INSERT INTO HIS_A_Dept (DeptNo, DeptName, ParentDeptNo, Manager)
                 VALUES (%s, %s, %s, %s)
             """
             cursor.execute(sql, (dept_no, dept_name, parent_dept_no, manager_no))
@@ -311,7 +311,7 @@ class DeptManagement:
             
             # 更新数据
             sql = """
-                UPDATE Dept 
+                UPDATE HIS_A_Dept 
                 SET DeptName = %s, ParentDeptNo = %s, Manager = %s
                 WHERE DeptNo = %s
             """
@@ -350,13 +350,13 @@ class DeptManagement:
             cursor = conn.cursor()
             
             # 检查是否有下级科室
-            cursor.execute("SELECT COUNT(*) as count FROM Dept WHERE ParentDeptNo = %s", (dept_data[0],))
+            cursor.execute("SELECT COUNT(*) as count FROM HIS_A_Dept WHERE ParentDeptNo = %s", (dept_data[0],))
             if cursor.fetchone()['count'] > 0:
                 messagebox.showerror("错误", "该科室存在下级科室，无法删除！")
                 return
             
             # 删除科室
-            cursor.execute("DELETE FROM Dept WHERE DeptNo = %s", (dept_data[0],))
+            cursor.execute("DELETE FROM HIS_A_Dept WHERE DeptNo = %s", (dept_data[0],))
             conn.commit()
             
             messagebox.showinfo("成功", "科室删除成功！")
@@ -388,9 +388,9 @@ class DeptManagement:
                     d.DeptName,
                     IFNULL(p.DeptName, '') as ParentDeptName,
                     IFNULL(doc.Dname, '') as ManagerName
-                FROM Dept d
-                LEFT JOIN Dept p ON d.ParentDeptNo = p.DeptNo
-                LEFT JOIN Doctor doc ON d.Manager = doc.Dno
+                FROM HIS_A_Dept d
+                LEFT JOIN HIS_A_Dept p ON d.ParentDeptNo = p.DeptNo
+                LEFT JOIN HIS_A_Doctor doc ON d.Manager = doc.Dno
                 WHERE d.DeptNo LIKE %s 
                    OR d.DeptName LIKE %s
                    OR p.DeptName LIKE %s

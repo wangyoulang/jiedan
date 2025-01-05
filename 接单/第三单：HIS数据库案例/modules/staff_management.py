@@ -97,10 +97,10 @@ class StaffManagement:
                     dept.DeptName as 所属科室,
                     t.Ttype as 职称,
                     u.role as 角色
-                FROM Doctor d
-                LEFT JOIN Dept dept ON d.Ddeptno = dept.DeptNo
-                LEFT JOIN Title t ON d.Tno = t.Tno
-                LEFT JOIN Users u ON d.Dno = u.uid
+                FROM HIS_A_Doctor d
+                LEFT JOIN HIS_A_Dept dept ON d.Ddeptno = dept.DeptNo
+                LEFT JOIN HIS_A_Title t ON d.Tno = t.Tno
+                LEFT JOIN HIS_A_Users u ON d.Dno = u.uid
                 {where_clause}
                 ORDER BY d.Dno
             """
@@ -214,7 +214,7 @@ class StaffManagement:
         try:
             conn = pymysql.connect(**self.db_config)
             cursor = conn.cursor()
-            cursor.execute("SELECT DeptNo, DeptName FROM Dept")
+            cursor.execute("SELECT DeptNo, DeptName FROM HIS_A_Dept")
             depts = cursor.fetchall()
             combobox['values'] = [''] + [f"{dept['DeptNo']} - {dept['DeptName']}" for dept in depts]
         except Exception as e:
@@ -229,7 +229,7 @@ class StaffManagement:
         try:
             conn = pymysql.connect(**self.db_config)
             cursor = conn.cursor()
-            cursor.execute("SELECT Tno, Ttype FROM Title")
+            cursor.execute("SELECT Tno, Ttype FROM HIS_A_Title")
             titles = cursor.fetchall()
             combobox['values'] = [''] + [f"{title['Tno']} - {title['Ttype']}" for title in titles]
         except Exception as e:
@@ -259,14 +259,14 @@ class StaffManagement:
             try:
                 # 插入医生数据
                 sql = """
-                    INSERT INTO Doctor (Dno, Dname, Dsex, Dage, Ddeptno, Tno)
+                    INSERT INTO HIS_A_Doctor (Dno, Dname, Dsex, Dage, Ddeptno, Tno)
                     VALUES (%s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(sql, (staff_no, staff_name, gender, age, dept_no, title_no))
                 
                 # 插入用户数据
                 sql = """
-                    INSERT INTO Users (uid, username, password, role, status, create_time)
+                    INSERT INTO HIS_A_Users (uid, username, password, role, status, create_time)
                     VALUES (%s, %s, %s, %s, %s, NOW())
                 """
                 cursor.execute(sql, (staff_no, staff_name, '123456', role, 1))
@@ -340,10 +340,10 @@ class StaffManagement:
             
             try:
                 # 删除用户数据
-                cursor.execute("DELETE FROM Users WHERE uid = %s", (staff_data[0],))
+                cursor.execute("DELETE FROM HIS_A_Users WHERE uid = %s", (staff_data[0],))
                 
                 # 删除医生数据
-                cursor.execute("DELETE FROM Doctor WHERE Dno = %s", (staff_data[0],))
+                cursor.execute("DELETE FROM HIS_A_Doctor WHERE Dno = %s", (staff_data[0],))
                 
                 conn.commit()
                 messagebox.showinfo("成功", "职工删除成功！")
@@ -382,10 +382,10 @@ class StaffManagement:
                     dept.DeptName as 所属科室,
                     t.Ttype as 职称,
                     u.role as 角色
-                FROM Doctor d
-                LEFT JOIN Dept dept ON d.Ddeptno = dept.DeptNo
-                LEFT JOIN Title t ON d.Tno = t.Tno
-                LEFT JOIN Users u ON d.Dno = u.uid
+                FROM HIS_A_Doctor d
+                LEFT JOIN HIS_A_Dept dept ON d.Ddeptno = dept.DeptNo
+                LEFT JOIN HIS_A_Title t ON d.Tno = t.Tno
+                LEFT JOIN HIS_A_Users u ON d.Dno = u.uid
                 WHERE d.Dno LIKE %s 
                    OR d.Dname LIKE %s
                    OR dept.DeptName LIKE %s
