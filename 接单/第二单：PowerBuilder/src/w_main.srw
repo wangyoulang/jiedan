@@ -17,10 +17,11 @@ end type
 end forward
 
 global type w_main from window
-integer width = 3566
-integer height = 1980
+integer x = 500
+integer width = 2075
+integer height = 1380
 boolean titlebar = true
-string title = "工资管理系统"
+string title = "工资管理系统-1220604211"
 boolean controlmenu = true
 boolean minbox = true
 boolean maxbox = true
@@ -61,8 +62,11 @@ destroy(this.cb_gz_main)
 destroy(this.cb_gz_report)
 end on
 
+type cb_salary from commandbutton within w_main
+end type
+
 type cb_code from commandbutton within w_main
-integer x = 750
+integer x = 667
 integer y = 800
 integer width = 750
 integer height = 160
@@ -80,7 +84,7 @@ event clicked;open(w_code_list)
 end event
 
 type cb_kq from commandbutton within w_main
-integer x = 750
+integer x = 667
 integer y = 160
 integer width = 750
 integer height = 160
@@ -98,7 +102,7 @@ event clicked;open(w_gz_kq)
 end event
 
 type cb_jlkk from commandbutton within w_main
-integer x = 750
+integer x = 667
 integer y = 640
 integer width = 750
 integer height = 160
@@ -116,7 +120,7 @@ event clicked;open(w_gz_jlkk)
 end event
 
 type cb_gz_main from commandbutton within w_main
-integer x = 750
+integer x = 667
 integer y = 320
 integer width = 750
 integer height = 160
@@ -134,7 +138,7 @@ event clicked;open(w_gz_main)
 end event
 
 type cb_gz_report from commandbutton within w_main
-integer x = 750
+integer x = 667
 integer y = 480
 integer width = 750
 integer height = 160
@@ -149,6 +153,6 @@ string text = "工资月报表"
 end type
 
 event clicked;
-w_gz_report w_report
-open(w_report)
-end event 
+open(w_gz_report)
+end event
+

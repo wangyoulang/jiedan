@@ -35,9 +35,9 @@ end on
 event open;// Profile Ks
 SQLCA.DBMS = "ODBC"
 SQLCA.AutoCommit = False
-SQLCA.DBParm = "Connectstring='DSN=ks'"
+SQLCA.DBParm = "Connectstring='DSN=ks2025'"
 connect;
-open(w_main)
+open(w_login)
 
 end event
 

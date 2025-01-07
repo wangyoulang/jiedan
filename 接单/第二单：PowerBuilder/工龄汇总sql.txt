@@ -47,6 +47,8 @@ CREATE TABLE gz_report_summary (
     glgz_avg DECIMAL(10, 2)                  -- 平均工龄工资
 );
 
+
+delete from gz_report_summary;
 INSERT INTO gz_report_summary (
         gl, rs, jbgz_total, glgz_total, zcgz_total, gwjt_total, 
         gdbt_total, jtf_total, jbf_total, jj_total, cdkk_total, 

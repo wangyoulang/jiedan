@@ -58,7 +58,7 @@ CREATE TABLE gz_report_summary_by_zglb (
     PRIMARY KEY (zglb_code)                     -- 职工类别编码作为主键
 );
 
-
+delete from gz_report_summary_by_zglb;
 
 INSERT INTO gz_report_summary_by_zglb (
     zglb_code,

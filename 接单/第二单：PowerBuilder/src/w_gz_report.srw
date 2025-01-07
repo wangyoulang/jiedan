@@ -2,7 +2,13 @@ $PBExportHeader$w_gz_report.srw
 forward
 global type w_gz_report from window
 end type
-type cb_return from commandbutton within w_gz_report
+type cb_4 from commandbutton within w_gz_report
+end type
+type cb_3 from commandbutton within w_gz_report
+end type
+type cb_2 from commandbutton within w_gz_report
+end type
+type cb_1 from commandbutton within w_gz_report
 end type
 type cb_calc from commandbutton within w_gz_report
 end type
@@ -34,7 +40,10 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
-cb_return cb_return
+cb_4 cb_4
+cb_3 cb_3
+cb_2 cb_2
+cb_1 cb_1
 cb_calc cb_calc
 cb_query cb_query
 dw_1 dw_1
@@ -47,7 +56,10 @@ end type
 global w_gz_report w_gz_report
 
 on w_gz_report.create
-this.cb_return=create cb_return
+this.cb_4=create cb_4
+this.cb_3=create cb_3
+this.cb_2=create cb_2
+this.cb_1=create cb_1
 this.cb_calc=create cb_calc
 this.cb_query=create cb_query
 this.dw_1=create dw_1
@@ -56,7 +68,10 @@ this.em_qsrq=create em_qsrq
 this.em_jsrq=create em_jsrq
 this.st_2=create st_2
 this.st_3=create st_3
-this.Control[]={this.cb_return,&
+this.Control[]={this.cb_4,&
+this.cb_3,&
+this.cb_2,&
+this.cb_1,&
 this.cb_calc,&
 this.cb_query,&
 this.dw_1,&
@@ -65,14 +80,13 @@ this.em_qsrq,&
 this.em_jsrq,&
 this.st_2,&
 this.st_3}
-
-// 设置默认日期范围
-em_qsrq.text = "2024/01/01"
-em_jsrq.text = "2024/01/31"
 end on
 
 on w_gz_report.destroy
-destroy(this.cb_return)
+destroy(this.cb_4)
+destroy(this.cb_3)
+destroy(this.cb_2)
+destroy(this.cb_1)
 destroy(this.cb_calc)
 destroy(this.cb_query)
 destroy(this.dw_1)
@@ -83,10 +97,138 @@ destroy(this.st_2)
 destroy(this.st_3)
 end on
 
-type cb_query from commandbutton within w_gz_report
-integer x = 293
+type cb_4 from commandbutton within w_gz_report
+integer x = 2825
+integer y = 1588
+integer width = 503
+integer height = 128
+integer taborder = 50
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "岗位汇总"
+end type
+
+event clicked;
+open(w_gz_report_summary_by_gwbh)
+end event
+
+type cb_3 from commandbutton within w_gz_report
+integer x = 2254
+integer y = 1588
+integer width = 503
+integer height = 128
+integer taborder = 40
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "职工类型汇总"
+end type
+
+event clicked;
+open(w_report_summary_by_zglb)
+end event
+
+type cb_2 from commandbutton within w_gz_report
+integer x = 1701
 integer y = 1592
-integer width = 402
+integer width = 503
+integer height = 128
+integer taborder = 40
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "部门汇总"
+end type
+
+event clicked;
+open(w_report_summary_dep)
+end event
+
+type cb_1 from commandbutton within w_gz_report
+integer x = 1152
+integer y = 1592
+integer width = 503
+integer height = 128
+integer taborder = 30
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "工龄汇总"
+end type
+
+event clicked;
+open(gz_report_summary)
+end event
+
+type cb_calc from commandbutton within w_gz_report
+integer x = 622
+integer y = 1592
+integer width = 503
+integer height = 128
+integer taborder = 30
+integer textsize = -12
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string text = "计算"
+end type
+
+event clicked;// 声明变量
+string ls_sql
+double ld_sum_value  // 用于存储结果
+int li_sqlcode       // 用于检查 SQL 执行状态
+
+// 构建 SQL 查询语句
+ls_sql = "SELECT SUM(yfhj) FROM gz_report_gz"
+
+// 声明动态游标
+declare cur_get dynamic cursor for sqlsa;
+
+// 准备 SQL 语句
+prepare sqlsa from :ls_sql;
+
+// 打开游标
+open dynamic cur_get;
+
+// 提取结果
+fetch cur_get into :ld_sum_value;
+
+// 检查 SQL 执行状态
+li_sqlcode = sqlca.sqlcode
+if li_sqlcode = 0 then
+    // 查询成功，显示结果
+    messagebox("查询结果", "工资总和为: " + string(ld_sum_value))
+elseif li_sqlcode = 100 then
+    // 无结果的情况
+    messagebox("查询结果", "没有数据！")
+else
+    // 查询失败
+    messagebox("操作信息", "查询失败，SQLCODE: " + string(li_sqlcode), exclamation!)
+end if
+
+// 关闭游标
+close cur_get;
+end event
+
+type cb_query from commandbutton within w_gz_report
+integer x = 91
+integer y = 1588
+integer width = 503
 integer height = 128
 integer taborder = 20
 integer textsize = -12
@@ -118,124 +260,6 @@ end if
 // 设置检索参数并执行检索
 dw_1.setTransObject(sqlca)
 dw_1.retrieve(ld_qsrq, ld_jsrq)
-end event
-
-type cb_return from commandbutton within w_gz_report
-integer x = 2011
-integer y = 1592
-integer width = 402
-integer height = 128
-integer taborder = 40
-integer textsize = -12
-integer weight = 400
-fontcharset fontcharset = ansi!
-fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Arial"
-string text = "返回"
-end type
-
-event clicked;close(parent)
-end event
-
-type cb_calc from commandbutton within w_gz_report
-integer x = 1152
-integer y = 1592
-integer width = 402
-integer height = 128
-integer taborder = 30
-integer textsize = -12
-integer weight = 400
-fontcharset fontcharset = ansi!
-fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Arial"
-string text = "计算"
-end type
-
-event clicked;
-date ld_qsrq, ld_jsrq
-string ls_sql
-
-// 获取日期范围
-ld_qsrq = date(em_qsrq.text)
-ld_jsrq = date(em_jsrq.text)
-
-if isnull(ld_qsrq) or isnull(ld_jsrq) then
-    MessageBox("错误", "请输入有效的日期范围!")
-    return
-end if
-
-if ld_qsrq > ld_jsrq then
-    MessageBox("错误", "起始日期不能大于结束日期!")
-    return
-end if
-
-// 开始事务
-SQLCA.AutoCommit = FALSE
-
-try
-    // 先删除该时间段的数据
-    DELETE FROM gz_report_gz WHERE qsrq = :ld_qsrq AND jsrq = :ld_jsrq;
-    
-    // 插入汇总数据 - 全部查询
-    INSERT INTO gz_report_gz (
-        zth, qsrq, jsrq, zg_code, gzzh, jbgz, glgz, zcgz, gwjt, gdbt, 
-        jbgzhz, jtf, jbf, jj, cdkk, bjkk, sjkk, kgkk, sdf, bxf, qtkk, 
-        kkhj, yfhj, dkse, sfhj
-    )
-    SELECT 
-        b.zg_code as zth,  // 使用职工编号作为主键
-        :ld_qsrq, 
-        :ld_jsrq, 
-        b.zg_code,
-        c.xm as gzzh,      // 使用职工姓名作为账号显示
-        SUM(CASE WHEN b.gz_item = 'jbgz' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'glgz' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'zcgz' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'gwjt' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'gdbt' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item IN ('jbgz','glgz','zcgz','gwjt','gdbt') THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'jtf' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'jbf' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'jj' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'cdkk' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'bjkk' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'sjkk' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'kgkk' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'sdf' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'bxf' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item = 'qtkk' THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item IN ('cdkk','bjkk','sjkk','kgkk','sdf','bxf','qtkk') THEN b.je ELSE 0 END),
-        SUM(CASE WHEN b.gz_item IN ('jbgz','glgz','zcgz','gwjt','gdbt','jtf','jbf','jj') THEN b.je ELSE 0 END),
-        MAX(a.dkse),  // 使用最大值，因为同一职工在同一期间的代扣税额应该相同
-        (SUM(CASE WHEN b.gz_item IN ('jbgz','glgz','zcgz','gwjt','gdbt','jtf','jbf','jj') THEN b.je ELSE 0 END) -
-         SUM(CASE WHEN b.gz_item IN ('cdkk','bjkk','sjkk','kgkk','sdf','bxf','qtkk') THEN b.je ELSE 0 END) -
-         MAX(a.dkse))
-    FROM gz_sheet_gz_main a
-    JOIN gz_sheet_gz_item b ON a.zth = b.zth AND a.djh = b.djh
-    LEFT JOIN code_zg c ON b.zg_code = c.zg_code
-    WHERE a.rq BETWEEN :ld_qsrq AND :ld_jsrq
-    AND a.qrbj = '1'  // 只统计已确认的工资单
-    GROUP BY b.zg_code, c.xm;  // 按职工分组统计
-    
-    if sqlca.sqlcode = 0 then
-        commit;
-        // 刷新显示
-        dw_1.retrieve(ld_qsrq, ld_jsrq)
-        MessageBox("成功", "工资月报表计算完成!")
-    else
-        rollback;
-        MessageBox("错误", "计算失败: " + sqlca.sqlerrtext)
-    end if
-    
-catch(RuntimeError rte)
-    rollback;
-    MessageBox("错误", "计算过程中发生错误: " + rte.getMessage())
-end try
-
-// 恢复自动提交
-SQLCA.AutoCommit = TRUE
 end event
 
 type dw_1 from datawindow within w_gz_report
@@ -281,6 +305,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 long textcolor = 33554432
+string text = "2024/01/01"
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = datemask!
 string mask = "yyyy/mm/dd"
@@ -299,6 +324,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
 long textcolor = 33554432
+string text = "2024/01/31"
 borderstyle borderstyle = stylelowered!
 maskdatatype maskdatatype = datemask!
 string mask = "yyyy/mm/dd"
@@ -336,4 +362,5 @@ long textcolor = 33554432
 long backcolor = 67108864
 string text = "到"
 boolean focusrectangle = false
-end type 
+end type
+

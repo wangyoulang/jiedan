@@ -60,8 +60,7 @@ CREATE TABLE gz_report_summary_dep (
     PRIMARY KEY (bm_code)                     -- 部门编码作为主键
 );
 
-
-
+delete from gz_report_summary_dep;
 	
 INSERT INTO gz_report_summary_dep (
     bm_code,

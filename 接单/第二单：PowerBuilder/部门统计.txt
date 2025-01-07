@@ -61,7 +61,7 @@ CREATE TABLE gz_report_summary_by_gwbh (
 );
 
 
-
+delete from gz_report_summary_by_gwbh;
 	
 INSERT INTO gz_report_summary_by_gwbh (
     gw_code,
