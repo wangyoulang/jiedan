@@ -33,13 +33,6 @@
             <version>3.5.2</version>
         </dependency>
         
-        <!-- OpenCV -->
-        <dependency>
-            <groupId>org.openpnp</groupId>
-            <artifactId>opencv</artifactId>
-            <version>4.5.1-2</version>
-        </dependency>
-        
         <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -96,7 +89,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>org.com.facecheckin.FaceCheckInApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

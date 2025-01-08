@@ -12,15 +12,17 @@ public class CheckInRecord {
     
     private Long userId;
     
+    private String userName;  // 用户姓名
+    
     private LocalDateTime checkInTime;
     
-    private String checkInType;  // 上班打卡或下班打卡
+    private String checkInType;  // 签到类型（上班打卡/下班打卡）
     
-    private String status;  // 正常、迟到、早退等
+    private String status;  // 状态（正常/迟到/早退）
     
-    private String location;  // 打卡地点
+    private String location;  // 签到地点
     
-    private String remark;
+    private String remark;  // 备注
     
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -29,5 +31,5 @@ public class CheckInRecord {
     private LocalDateTime updateTime;
     
     @TableLogic
-    private Integer deleted;
+    private Boolean deleted;
 } 
