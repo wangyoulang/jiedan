@@ -77,7 +77,41 @@ Page({
   // 获取单词列表
   async fetchWordsByPhonetic(phonetic) {
     try {
-      const result = await new Promise((resolve, reject) => {
+      this.setData({ loading: true })
+      
+      // 使用共享云环境
+      const cloudEnv = getApp().globalData.cloudEnv
+      if (!cloudEnv) {
+        throw new Error('云环境未初始化')
+      }
+
+      // 从云数据库查询
+      const result = await cloudEnv.database().collection('phonetic_words')
+        .where({
+          phonetic: phonetic
+        })
+        .get()
+      
+      // 如果云数据库中有数据且未过期（这里设置7天过期）
+      const now = new Date().getTime()
+      const sevenDays = 7 * 24 * 60 * 60 * 1000
+      
+      if (result.data.length > 0 && (now - result.data[0].updateTime) < sevenDays) {
+        console.log('从云数据库获取数据:', result.data[0])
+        const wordObjects = result.data[0].words.map(word => ({
+          word: word,
+          phonetic: phonetic
+        }))
+        
+        this.setData({
+          wordList: wordObjects,
+          loading: false
+        })
+        return
+      }
+
+      // 如果云数据库中没有数据或数据已过期，则请求API
+      const apiResult = await new Promise((resolve, reject) => {
         wx.request({
           url: 'https://yuanqi.tencent.com/openapi/v1/agent/chat/completions',
           method: 'POST',
@@ -113,12 +147,11 @@ Page({
         })
       })
 
-      if (result.statusCode === 200 && result.data) {
-        console.log('API Data:', result.data)
+      if (apiResult.statusCode === 200 && apiResult.data) {
+        console.log('API Data:', apiResult.data)
         
-        // 检查返回数据的结构
-        if (result.data.choices && result.data.choices[0] && result.data.choices[0].message) {
-          const content = result.data.choices[0].message.content
+        if (apiResult.data.choices && apiResult.data.choices[0] && apiResult.data.choices[0].message) {
+          const content = apiResult.data.choices[0].message.content
           console.log('Content:', content)
           
           const words = content.split(',').map(word => word.trim()).filter(word => word)
@@ -129,17 +162,43 @@ Page({
             phonetic: this.data.selectedPhonetic
           }))
 
+          // 保存到云数据库
+          try {
+            if (result.data.length > 0) {
+              // 更新已存在的记录
+              await cloudEnv.database().collection('phonetic_words')
+                .doc(result.data[0]._id)
+                .update({
+                  data: {
+                    words: words,
+                    updateTime: now
+                  }
+                })
+            } else {
+              // 创建新记录
+              await cloudEnv.database().collection('phonetic_words')
+                .add({
+                  data: {
+                    phonetic: phonetic,
+                    words: words,
+                    updateTime: now
+                  }
+                })
+            }
+            console.log('数据已保存到云数据库')
+          } catch (error) {
+            console.error('保存到云数据库失败：', error)
+          }
+
           this.setData({
             wordList: wordObjects,
             loading: false
           })
         } else {
-          console.error('Invalid API Response Structure:', result.data)
           throw new Error('API返回数据格式不正确')
         }
       } else {
-        console.error('Invalid Status Code or No Data:', result)
-        throw new Error(`API请求失败: ${result.statusCode}`)
+        throw new Error(`API请求失败: ${apiResult.statusCode}`)
       }
     } catch (error) {
       console.error('完整错误信息：', error)

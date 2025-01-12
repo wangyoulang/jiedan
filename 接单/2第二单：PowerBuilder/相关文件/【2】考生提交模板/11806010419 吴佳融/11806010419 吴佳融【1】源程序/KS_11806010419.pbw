@@ -1,0 +1,8 @@
+Save Format v3.0(19990112)
+@begin Unchecked
+@end;
+@begin Targets
+ 0 "ks_11806010419.pbt";
+@end;
+DefaultTarget "ks_11806010419.pbt";
+DefaultRemoteTarget "ks_11806010419.pbt";

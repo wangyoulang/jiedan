@@ -1,0 +1,48 @@
+<view class="container">
+  <!-- 用户信息区域 -->
+  <view class="user-info">
+    <view class="avatar-container">
+      <image class="avatar" src="{{userInfo.avatarUrl || '../../assets/default-avatar.png'}}" mode="aspectFill"></image>
+    </view>
+    <view class="user-detail">
+      <text class="nickname">{{userInfo.nickName || '未登录'}}</text>
+      <button wx:if="{{!userInfo}}" class="login-btn" bindtap="handleReLogin">点击登录</button>
+    </view>
+  </view>
+
+  <!-- 学习统计 -->
+  <view class="stats-section">
+    <view class="section-title">学习统计</view>
+    <view class="stats-grid">
+      <view class="stats-item">
+        <text class="stats-num">{{studyStats.totalWords}}</text>
+        <text class="stats-label">总单词量</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-num">{{studyStats.knownWords}}</text>
+        <text class="stats-label">已掌握</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-num">{{studyStats.unknownWords}}</text>
+        <text class="stats-label">待学习</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近活动 -->
+  <view class="activity-section">
+    <view class="section-title">最近活动</view>
+    <view class="activity-list">
+      <view wx:for="{{recentActivity}}" wx:key="timestamp" class="activity-item">
+        <view class="activity-content">
+          <text class="word">{{item.word}}</text>
+          <text class="phonetic">/{{item.phonetic}}/</text>
+        </view>
+        <text class="activity-type {{item.type === 'known' ? 'type-known' : 'type-unknown'}}">
+          {{item.type === 'known' ? '已掌握' : '待学习'}}
+        </text>
+        <text class="activity-time">{{item.date}}</text>
+      </view>
+    </view>
+  </view>
+</view> 

@@ -30,6 +30,10 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
+    "useStaticServer": true,
+    "staticServerOptions": {
+      "basePath": "/"
+    },
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -38,11 +42,13 @@
     "enableEngineNative": false,
     "checkInvalidKey": true,
     "checkSiteMap": true,
-    "showES6CompileOption": false
+    "showES6CompileOption": false,
+    "cloudfunctionRoot": "cloudfunctions/",
+    "miniprogramRoot": "miniprogram/"
   },
   "compileType": "miniprogram",
   "libVersion": "2.19.4",
-  "appid": "wx01bb7934282c6d78",
+  "appid": "wx50720095fcb51157",
   "projectname": "我的小程序",
   "condition": {},
   "editorSetting": {

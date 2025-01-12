@@ -51,12 +51,14 @@ Page({
             userInfo: res.userInfo
           })
           wx.setStorageSync('userInfo', res.userInfo)
+          wx.navigateTo({
+            url: '/pages/user-center/user-center'
+          })
         }
       })
     } else {
-      wx.showToast({
-        title: '个人中心开发中',
-        icon: 'none'
+      wx.navigateTo({
+        url: '/pages/user-center/user-center'
       })
     }
   }

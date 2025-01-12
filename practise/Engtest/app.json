@@ -1,17 +1,23 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
     "pages/learn/learn",
     "pages/known-words/known-words",
-    "pages/unknown-words/unknown-words"
+    "pages/unknown-words/unknown-words",
+    "pages/user-center/user-center",
+    "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "我的小程序",
+    "navigationBarTitleText": "音标背单词",
     "navigationBarTextStyle": "black"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.userProfile": {
+      "desc": "用于显示用户头像和昵称"
+    }
+  }
 } 
